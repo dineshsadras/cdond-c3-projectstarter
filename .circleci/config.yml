@@ -104,7 +104,7 @@ jobs:
   configure-infrastructure:
     docker:
       # Docker image here that supports Ansible
-      - image: circleci/python
+      - image: amazon/aws-cli
     steps:
       - checkout
       - add_ssh_keys:
