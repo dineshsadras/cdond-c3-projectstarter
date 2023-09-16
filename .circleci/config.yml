@@ -163,8 +163,7 @@ jobs:
           command: |
             yum install -y tar
             yum install -y gzip
-            amazon-linux-extras install -y epel
-            yum install -y nodejs
+            yum install nodejs --enablerepo=epel-testing
             yum install -y npm
       - run:
           name: Get backend url
@@ -199,7 +198,6 @@ jobs:
           command: |
             apk add tar
             apk add gzip
-            # install ansible
             apk add --update ansible
             apk add nodejs
             apk add npm
