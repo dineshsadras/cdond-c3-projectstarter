@@ -79,19 +79,19 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            mkdir -p workspace
-                        
+# mkdir -p workspace
+#  chmod 777 workspace
             INSTANCE_ID=$(aws cloudformation describe-stack-resources --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" --query 'StackResources[?ResourceType==`AWS::EC2::Instance`].PhysicalResourceId' --output text)
 
             PUBLIC_IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
             
-            echo "[web]" > workspace/inventory.txt
-            echo $PUBLIC_IP >> workspace/inventory.txt
+            echo "[web]" > ~/inventory.txt
+            echo $PUBLIC_IP >> ~/inventory.txt
 
-            cat workspace/inventory.txt
+            cat ~/inventory.txt
 
       - persist_to_workspace:
-          root: workspace
+          root: ~/
           paths:
             - inventory.txt
 
@@ -114,11 +114,12 @@ jobs:
             - "fe:24:b2:0d:27:4b:05:f6:71:d8:cc:67:83:dc:05:b5"
 
       - attach_workspace:
-          at: /workspace
+          at: ~/
       
       - run:
           name: Install dependencies
           command: |
+            cat ~/inventory.txt
             yum install -y tar
             yum install -y gzip
             # install ansible
