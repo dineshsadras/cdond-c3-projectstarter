@@ -163,8 +163,6 @@ jobs:
           command: |
             sudo apt -y update
             sudo apt install -y tar gzip curl unzip
-            sudo apt install -y python3 python3-pip
-            python3 -m pip install --user ansible
 
       - run:
           name: Install aws cli
@@ -238,4 +236,8 @@ workflows:
       - run-migrations:
           requires: [configure-infrastructure]
       - deploy-frontend:
+          requires: [run-migrations]
+      - deploy-frontend:
+          requires: [run-migrations]
+      - deploy-backend:
           requires: [run-migrations]
