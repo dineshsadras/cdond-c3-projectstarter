@@ -80,7 +80,7 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            INSTANCE_IP=$(aws ec2 describe-instances --filters Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID} --query "Reservations[*].Instances[*].PublicIpAddress" --output text)
+            INSTANCE_IP=$(aws ec2 describe-instances --filters Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --query "Reservations[*].Instances[*].PublicIpAddress" --output text)
             
             echo "[web]" > ~/inventory.txt
             echo $INSTANCE_IP >> ~/inventory.txt
@@ -167,7 +167,7 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            INSTANCE_IP=$(aws ec2 describe-instances --filters Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID} --query "Reservations[*].Instances[*].PublicIpAddress" --output text)
+            INSTANCE_IP=$(aws ec2 describe-instances --filters Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --query "Reservations[*].Instances[*].PublicIpAddress" --output text)
             echo API_URL="http://${INSTANCE_IP}:3030" >> frontend/.env
             cat frontend/.env
             export API_URL="http://${INSTANCE_IP}:3030"
