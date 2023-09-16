@@ -18,3 +18,14 @@
     global: yes
     production: yes
     state: present
+
+- name: "Unarchive backend files"
+  unarchive:
+    src: backend/artifact.tar.gz
+    dest: ~/backend-app
+
+- name: execute pm2
+  command: |
+    cd ~/backend-app
+    pm2 stop default
+    pm2 start npm -- start
