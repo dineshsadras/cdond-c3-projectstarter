@@ -110,22 +110,22 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "fe:24:b2:0d:27:4b:05:f6:71:d8:cc:67:83:dc:05:b5"
-
-      - attach_workspace:
-          at: ~/
       
       - run:
           name: Install dependencies
           command: |
-            cat ~/inventory.txt
             yum install -y tar
             yum install -y gzip
             # install ansible
             pip install --user ansible
 
+      - attach_workspace:
+          at: ~/
+
       - run:
           name: Configure server
           command: |
+            cat ~/inventory.txt
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
 
