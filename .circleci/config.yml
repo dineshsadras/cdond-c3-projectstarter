@@ -83,15 +83,15 @@ jobs:
 
             PUBLIC_IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
             
-            echo "[web]" > inventory.txt
-            echo $PUBLIC_IP >> inventory.txt
+            echo "[web]" > workspace/inventory.txt
+            echo $PUBLIC_IP >> workspace/inventory.txt
 
-            cat inventory.txt
+            cat workspace/inventory.txt
 
       - persist_to_workspace:
-          root: /tmp/workspace
+          root: workspace
           paths:
-            - ansible/
+            - inventory.txt
 
       - destroy-environment
 
@@ -136,6 +136,6 @@ workflows:
       - build-frontend
       - build-backend
       - deploy-infrastructure:
-          requires: [build-frontend, build-backend]
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
