@@ -163,8 +163,9 @@ jobs:
           command: |
             sudo apt-get update
 
-      - restore-cache:
+      - restore_cache:
           keys: frontend-build
+          
       - run:
           name: Install aws cli
           command: |
