@@ -163,6 +163,7 @@ jobs:
           command: |
             yum install -y tar
             yum install -y gzip
+            amazon-linux-extras install -y epel
             yum install -y nodejs
             yum install -y npm
       - run:
@@ -183,7 +184,42 @@ jobs:
            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
 
       - destroy-environment
-      # Here's where you will add some code to rollback on failure      
+      
+  deploy-backend:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "fe:24:b2:0d:27:4b:05:f6:71:d8:cc:67:83:dc:05:b5"
+      
+      - run:
+          name: Install dependencies
+          command: |
+            apk add tar
+            apk add gzip
+            # install ansible
+            apk add --update ansible
+            apk add nodejs
+            apk add npm
+
+      - attach_workspace:
+          at: ~/
+      
+      - run:
+          name: Deploy backend
+          command: |
+            cd backend
+            npm i
+            npm run build
+            cd ..
+            tar -C backend -czvf artifact.tar.gz .
+            cd .circleci/ansible
+            echo "Contents  of the inventory.txt file is -------"
+            cat ~/inventory.txt
+            ansible-playbook -i ~/inventory.txt deploy-backend.yml
+           
 
 workflows:
   default:
