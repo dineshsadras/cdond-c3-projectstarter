@@ -114,10 +114,10 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            yum install -y tar
-            yum install -y gzip
+            apk add tar
+            apk add gzip
             # install ansible
-            pip install --user ansible
+            apk add --update ansible
 
       - attach_workspace:
           at: ~/
