@@ -159,19 +159,15 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install dependencies
-          command: |
-            sudo apt-get update
-
-      - restore_cache:
-          keys: frontend-build
-          
-      - run:
-          name: Install aws cli
+          name: Install dependencies - aws cli
           command: |
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
+
+      - restore_cache:
+          keys: frontend-build
+          
       - run:
           name: Get backend url
           command: |
@@ -203,8 +199,6 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add tar
-            apk add gzip
             apk add --update ansible
             apk add nodejs curl
             apk add npm
@@ -216,6 +210,10 @@ jobs:
       - run:
           name: Deploy backend
           command: |
+            cd backend
+            npm i
+            npm run build
+            cd ..
             tar -C backend -czvf artifact.tar.gz .
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
