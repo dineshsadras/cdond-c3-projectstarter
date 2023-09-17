@@ -203,8 +203,10 @@ jobs:
             apk add nodejs curl
             apk add npm
             pip install awscli
+    
+      - attach_workspace:
+          at: ~/  
 
-   
       - run:
           name: Deploy backend
           command: |
