@@ -400,15 +400,17 @@ jobs:
             if [[ "${OldWorkflowID}" == "" ]]
             then
              echo "No old workflows found for cleanup"
-            elif [[ "${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
-            then
+            else
+             if [[ "${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
+             then
               echo "Cleaning up "${OldWorkflowID} frontend and backend"
               echo "s3://udapeople-${OldWorkflowID}"
               aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
               aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
-            else
+             else
               echo "Cannot cleanup"
+             fi
             fi
 
 workflows:
