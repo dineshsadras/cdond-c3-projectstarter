@@ -26,6 +26,8 @@
     tar xzf node_exporter-1.0.1.linux-amd64.tar.gz
     sudo cp node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/node_exporter
     rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
+    
+    sudo useradd --no-create-home node_exporter
 
 - name: configure node-exporter Service
   become: true
