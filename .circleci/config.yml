@@ -4,7 +4,7 @@ orbs:
 
 commands:
   destroy-environment:
-    description: Destroy back-end and front-end cloudformation stacks given a workflow ID
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     steps:
       - run:
           name: Destroy environments
@@ -263,9 +263,9 @@ jobs:
           name: Get backend url
           command: |
             export INSTANCE_IP=$(aws ec2 describe-instances --filters Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --query "Reservations[*].Instances[*].PublicIpAddress" --output text)
-            export API_URL="https://${INSTANCE_IP}:3030"
+            export API_URL="http://${INSTANCE_IP}:3030"
             echo "API_URL = ${API_URL}"
-            echo API_URL="https://${INSTANCE_IP}:3030" >> frontend/.env
+            echo API_URL="http://${INSTANCE_IP}:3030" >> frontend/.env
             cat frontend/.env
             
             
