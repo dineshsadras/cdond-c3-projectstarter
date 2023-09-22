@@ -342,7 +342,7 @@ jobs:
             if curl -s "${API_URL}/api/status" | grep "ok"
             then
              echo "Success. URL is accessible"
-             return 1
+             return 0
             else 
              echo "url not accessible"
              return 1
